@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Все ссылки</title>
+    {% block stylesheets %}
+        <link href="{{ asset('styles/all_links.css') }}" rel="stylesheet">
+    {% endblock %}
+</head>
+<body>
+
+
+
+<div class="container">
+    <h1>Все сокращённые ссылки</h1>
+    <a href="{{ path('main_page') }}">← На главную</a>
+
+
+    {% if links|length > 0 %}
+    <!-- Форма для обработки выбранных записей -->
+        <form action="{{ path('delete_links') }}" method="POST">
+            <table>
+                <thead>
+                <tr>
+                    <th>Выбрать запись</th>
+                    <th>Короткая ссылка</th>
+                    <th>Полная ссылка</th>
+                    <th>Количество использований</th>
+                    <th>Последнее использование</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for link in links %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="selected_links[]" value="{{ link.id }}">
+                        </td>
+                        <td>
+                            <a href="{{ path('redirect_short', {'slug': link.shortUrl}) }}" target="_blank">
+                                {{ app.request.schemeAndHttpHost ~ '/short/' ~ link.shortUrl }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ link.originalUrl }}" target="_blank">{{ link.originalUrl }}</a>
+                        </td>
+                        <td>{{ link.numbersOfClick }}</td>
+                        <td>
+                            {{ link.lastUseDate ? link.lastUseDate|date('d.m.Y H:i') : '-' }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit">Удалить ссылки</button>
+        </form>
+    {% else %}
+        <p>Нет сохранённых сокращенных ссылок.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

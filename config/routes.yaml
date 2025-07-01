@@ -1,0 +1,14 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+
+main_page:
+    path: /
+    controller: App\Controller\LinksController::index
+
+redirect_short:
+    path: /short/{slug}
+    controller: App\Controller\LinksController::redirectUrl
