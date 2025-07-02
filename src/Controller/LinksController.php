@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\LinksForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,9 @@ final class LinksController extends AbstractController
     {
         $shortUrl = null;
         $error = null;
+
+        //Форма для получение данных!
+        $form = $this->createForm(LinksForm::class . '[]');
 
         if ($request->isMethod( 'POST')) {
             $originalUrl = $request->request->get('url');

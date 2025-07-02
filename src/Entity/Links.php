@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\LinksRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LinksRepository::class)]
 class Links
@@ -15,6 +16,7 @@ class Links
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank("Значение поля `name` не передано")]
     private ?string $originalUrl = null;
 
     #[ORM\Column(length: 255)]
@@ -90,7 +92,6 @@ class Links
     public function setNumbersOfClick(int $numbersOfClick): static
     {
         $this->numbersOfClick = $numbersOfClick;
-
         return $this;
     }
 }

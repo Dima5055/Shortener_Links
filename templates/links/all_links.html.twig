@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Все ссылки</title>
-    {% block stylesheets %}
-        <link href="{{ asset('styles/all_links.css') }}" rel="stylesheet">
-    {% endblock %}
-</head>
-<body>
+{% extends "base.html.twig" %}
 
+{% block title %}Все ссылки{% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('styles/all_links.css') }}" rel="stylesheet">
+{% endblock %}
 
-
+{% block body %}
 <div class="container">
     <h1>Все сокращённые ссылки</h1>
     <a href="{{ path('main_page') }}">← На главную</a>
@@ -57,6 +52,4 @@
         <p>Нет сохранённых сокращенных ссылок.</p>
     {% endif %}
 </div>
-
-</body>
-</html>
+{% endblock %}

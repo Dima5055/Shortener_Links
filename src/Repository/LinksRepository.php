@@ -53,6 +53,8 @@ class LinksRepository extends ServiceEntityRepository
         return $schemeAndHost . '/short/' . $slug;
     }
 
+
+    //Функция для удаление записей по списку Links id
     public function deleteByIds($selectedIds): void
     {
         if (!empty($selectedIds)) {

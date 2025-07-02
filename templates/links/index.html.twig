@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Сокращение ссылок</title>
-    {% block stylesheets %}
-        <link href="{{ asset('/styles/index.css') }}" type="text/css" rel="stylesheet" />
-    {% endblock %}
-</head>
-<body>
+{% extends "base.html.twig" %}
 
+{% block body %}
 <div class="container">
     <h1>Сокращение ссылок</h1>
     <form action="/" method="POST">
@@ -33,5 +25,5 @@
     {% endif %}
 </div>
 
-</body>
-</html>
+{% endblock %}
+
