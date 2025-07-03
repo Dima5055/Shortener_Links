@@ -19,7 +19,7 @@ final class LinksController extends AbstractController
         $error = null;
 
         //Форма для получение данных!
-        $form = $this->createForm(LinksForm::class . '[]');
+        //$form = $this->createForm(LinksForm::class . '[]');
 
         if ($request->isMethod( 'POST')) {
             $originalUrl = $request->request->get('url');
