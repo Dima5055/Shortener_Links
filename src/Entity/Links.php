@@ -6,6 +6,7 @@ use App\Repository\LinksRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 #[ORM\Entity(repositoryClass: LinksRepository::class)]
 class Links
@@ -16,7 +17,8 @@ class Links
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank("Значение поля `name` не передано")]
+    #[Assert\NotBlank(message: 'Значение поля не передано')]
+    #[Assert\Url(message: 'Указанная ссылка {{ value }} не является url',)]
     private ?string $originalUrl = null;
 
     #[ORM\Column(length: 255)]
@@ -30,6 +32,14 @@ class Links
 
     #[ORM\Column]
     private ?int $numbersOfClick = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $disposable = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    //#[Assert\DateTime(message: 'Указанное значение даты {{ value }} не является правильной',)]
+    private ?\DateTime $expirationDate = null;
+
 
     public function getId(): ?int
     {
@@ -92,6 +102,30 @@ class Links
     public function setNumbersOfClick(int $numbersOfClick): static
     {
         $this->numbersOfClick = $numbersOfClick;
+        return $this;
+    }
+
+    public function isDisposable(): ?bool
+    {
+        return $this->disposable;
+    }
+
+    public function setDisposable(bool $disposable): static
+    {
+        $this->disposable = $disposable;
+
+        return $this;
+    }
+
+    public function getExpirationDate(): ?\DateTime
+    {
+        return $this->expirationDate;
+    }
+
+
+    public function setExpirationDate(?\DateTime $expirationDate): self
+    {
+        $this->expirationDate = $expirationDate;
         return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Links;
 use App\Form\LinksForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,29 +17,23 @@ final class LinksController extends AbstractController
     public function index(Request $request, LinksRepository $linksRepository): Response
     {
         $shortUrl = null;
-        $error = null;
 
-        //Форма для получение данных!
-        //$form = $this->createForm(LinksForm::class . '[]');
+        $link = new Links();
+        $form = $this->createForm(LinksForm::class, $link);
 
-        if ($request->isMethod( 'POST')) {
-            $originalUrl = $request->request->get('url');
-            if (!filter_var($originalUrl, FILTER_VALIDATE_URL)) {
-                $error = 'Некорректный URL';
-            }
-            else {
-                do {
-                    $slug = $this->generateShortCode();
-                    $existingLink = $linksRepository->findOneBy(['shortUrl' => $slug]);
-                } while ($existingLink !== null);
-                $linksRepository->saveNewLink($originalUrl, $slug);
-                $shortUrl = $linksRepository->fullShortLink($slug, $request->getSchemeAndHttpHost());
-            }
+        $form->handleRequest($request);
+        if  ($form->isSubmitted() && $form->isValid()) {
+            do {
+                $slug = $this->generateShortCode();
+                $existingLink = $linksRepository->findOneBy(['shortUrl' => $slug]);
+            } while ($existingLink !== null);
+            $linksRepository->saveNewLink($link, $slug);
+            $shortUrl = $linksRepository->fullShortLink($slug, $request->getSchemeAndHttpHost());
         }
 
         return $this->render('links/index.html.twig', [
+            'form' => $form->createView(),
             'short_url' => $shortUrl,
-            'error' => $error,
         ]);
     }
 

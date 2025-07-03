@@ -21,15 +21,17 @@ class LinksRepository extends ServiceEntityRepository
     /**
      * Функция добавление новой ссылки
      */
-    public function saveNewLink(string $originalUrl, string $shortUrl): Links
+    public function saveNewLink(Links $link, string $slug): Links
     {
         date_default_timezone_set('Europe/Moscow');
-        $link = new Links();
-        $link->setOriginalUrl($originalUrl);
-        $link->setShortUrl($shortUrl);
+        if ($link->isDisposable() === null) {
+            $link->setDisposable(false);
+        }
+        $link->setShortUrl($slug);
         $link->setCreationDate(new \DateTime());
         $link->setLastUseDate(new \DateTime());
         $link->setNumbersOfClick(0);
+
         $this->getEntityManager()->persist($link);
         $this->getEntityManager()->flush();
         return $link;
