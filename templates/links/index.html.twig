@@ -3,19 +3,44 @@
 {% block body %}
 <div class="container">
     <h1>Сокращение ссылок</h1>
-    <form action="/" method="POST">
-        <input type="text" name="url" placeholder="Введите ссылку" required>
+
+    {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_label(form.originalUrl, null, {
+                'label_attr': {'class': 'label_form'}
+            }) }}
+            {{ form_widget(form.originalUrl, {
+                'attr': {'class': 'input_text'}
+            }) }}
+            {{ form_errors(form.originalUrl) }}
+        </div>
+
+
+        <div class="form-check">
+            {{ form_label(form.disposable, null, {
+                'label_attr': {'class': 'form-check-label label_form'}
+            }) }}
+            {{ form_widget(form.disposable, {
+                'attr': {'class': 'form-check-input'}
+            }) }}
+        </div>
+
+
+        <div class="form-date">
+            {{ form_label(form.expirationDate, null, {
+                'label_attr': {'class': 'form-check-label label_form'}
+            }) }}
+            {{ form_widget(form.expirationDate) }}
+            {{ form_errors(form.expirationDate) }}
+        </div>
+
+    {#  {{ form_row(form.expirationDate) }} #}
         <button type="submit">Сократить</button>
-    </form>
+    {{ form_end(form) }}
 
     <form action="{{ path('all_links_page') }}" method="GET">
         <button type="submit">Показать все ссылки</button>
     </form>
-
-
-    {% if error %}
-    <div class="error">{{ error }}</div>
-    {% endif %}
 
     {% if short_url %}
     <div class="result">

@@ -2,7 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Links;
+use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,16 +19,31 @@ class LinksForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('url', TextareaType::class, [])
-            ->add('expiration date', DateType::class)
-            ->add('submit', SubmitType::class)
-        ;
+            ->add('originalUrl', TextareaType::class, [
+                'label' => 'Ваша ссылка: ',
+                'required' => true,
+                'row_attr' => [
+                    'class' => 'form-group']
+            ])
+            ->add('disposable', CheckboxType::class, [
+                'label' => 'Одноразовая ссылка: ',
+                'required' => false,
+                'row_attr' => [
+                    'class' => 'form-group-disposable']
+            ])
+            ->add('expirationDate', DateTimeType::class, [
+                'label' => 'Дата истечения: ',
+                'required' => false,
+                'empty_data' => null,
+                'row_attr' => [
+                    'class' => 'form-date']
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            // Configure your form options here
+            'data_class' => Links::class,
         ]);
     }
 }

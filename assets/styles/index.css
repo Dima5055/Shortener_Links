@@ -16,8 +16,19 @@ body {
 h1 {
     text-align: center;
 }
-input[type="text"] {
-    width: 100%;
+
+
+.label_form[class='label_form'] {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 18px;                        /* Размер шрифта */
+    color: #2c3e50;                         /* Цвет текста (темно-синий) */
+    font-weight: 500;                       /* Полужирное начертание */
+    margin-bottom: 8px;                     /* Отступ снизу */
+    display: block;
+}
+
+.input_text {
+    width: 95%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -152,4 +163,20 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+
+.form-check {
+    display: flex;
+    align-items: center; /* Выравнивание по вертикали */
+    gap: 10px; /* Расстояние между чекбоксом и лейблом */
+}
+
+.form-check-input {
+    margin: 0; /* Убираем стандартные отступы */
+}
+
+.label_form.form-check-label {
+    margin-bottom: 0; /* Убираем отступ снизу */
+    cursor: pointer; /* Курсор-указатель при наведении */
 }
