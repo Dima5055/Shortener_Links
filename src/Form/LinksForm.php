@@ -34,7 +34,6 @@ class LinksForm extends AbstractType
             ->add('expirationDate', DateTimeType::class, [
                 'label' => 'Дата истечения: ',
                 'required' => false,
-                'empty_data' => null,
                 'row_attr' => [
                     'class' => 'form-date']
             ]);

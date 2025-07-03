@@ -36,9 +36,9 @@ class Links
     #[ORM\Column(nullable: true)]
     private ?bool $disposable = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    //#[Assert\DateTime(message: 'Указанное значение даты {{ value }} не является правильной',)]
-    private ?\DateTime $expirationDate = null;
+    #[ORM\Column(nullable: true)]
+    #[Assert\GreaterThan('+ 1 min', message: "Время и дата должна быть больше чем сейчас")]
+    private ?\DateTimeImmutable $expirationDate = null;
 
 
     public function getId(): ?int
@@ -117,13 +117,13 @@ class Links
         return $this;
     }
 
-    public function getExpirationDate(): ?\DateTime
+    public function getExpirationDate(): ?\DateTimeImmutable
     {
         return $this->expirationDate;
     }
 
 
-    public function setExpirationDate(?\DateTime $expirationDate): self
+    public function setExpirationDate(?\DateTimeImmutable $expirationDate): static
     {
         $this->expirationDate = $expirationDate;
         return $this;

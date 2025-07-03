@@ -31,6 +31,8 @@ final class LinksController extends AbstractController
             $shortUrl = $linksRepository->fullShortLink($slug, $request->getSchemeAndHttpHost());
         }
 
+        is_null($link->getExpirationDate()) ?? $link->setExpirationDate(null);
+
         return $this->render('links/index.html.twig', [
             'form' => $form->createView(),
             'short_url' => $shortUrl,
