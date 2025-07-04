@@ -30,14 +30,11 @@ final class LinksController extends AbstractController
             } while ($existingLink !== null);
             is_null($link->getExpirationDate()) ?? $link->setExpirationDate(null);
             $linksRepository->saveNewLink($link, $slug);
-//            $linksRepository->saveNewLink($link);
-
-
+            //$linksRepository->saveNewLink2($link); //второй варинат сохранения
             $shortUrl = $linksRepository->fullShortLink($link->getShortUrl(), $request->getSchemeAndHttpHost());
         }
 
         is_null($link->getExpirationDate()) ?? $link->setExpirationDate(null);
-
         return $this->render('links/index.html.twig', [
             'form' => $form->createView(),
             'shortUrl' => $shortUrl,
@@ -48,6 +45,18 @@ final class LinksController extends AbstractController
     public function showAllLinks(LinksRepository $linksRepository): Response
     {
         $links = $linksRepository->findAll();
+        $em = $linksRepository->getEntityManager();
+
+        foreach ($links as $key => $link) {
+            if (($link->isDisposable() && $link->getNumbersOfClick() == 1)
+                || ($link->getExpirationDate() < new \DateTimeImmutable() && $link->getExpirationDate() != null)) {
+                $em->remove($link);
+                unset($links[$key]);
+            }
+        }
+        $em->flush();
+        $links = array_values($links);
+
         return $this->render('links/all_links.html.twig', [
             'links' => $links,
         ]);

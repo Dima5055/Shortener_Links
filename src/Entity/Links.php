@@ -39,9 +39,9 @@ class Links
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Assert\GreaterThan(
-        //value: new \DateTime('now', new \DateTimeZone('Europe/Moscow')),
+        //value: new \DateTimeImmutable('now', new \DateTimeZone('Europe/Moscow')))]
         //message: "Дата должна быть больше {{ value }}")]
-        'today', message: "Дата должн быть больше {{ value }}")]
+        '+ 5 minutes', message: "Дата и время должны быть больше, чем 5 минут")]
     private ?\DateTimeImmutable $expirationDate = null;
 
 

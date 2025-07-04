@@ -27,6 +27,9 @@
 
 
         <div class="form-date">
+            {{ form_label(form.expirationDate, 'Дата истечения срока: ', {
+                'label_attr': {'class': 'form-date-label'}
+            }) }}
             {{ form_widget(form.expirationDate) }}
             {{ form_errors(form.expirationDate) }}
         </div>

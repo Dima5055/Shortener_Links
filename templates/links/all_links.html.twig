@@ -22,6 +22,7 @@
                     <th>Полная ссылка</th>
                     <th>Количество использований</th>
                     <th>Последнее использование</th>
+                    <th>Дата устаревания ссылки</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,9 +40,25 @@
                             <a href="{{ link.originalUrl }}" target="_blank">{{ link.originalUrl }}</a>
                         </td>
                         <td>{{ link.numbersOfClick }}</td>
+
                         <td>
                             {{ link.lastUseDate ? link.lastUseDate|date('d.m.Y H:i') : 'Данная ссылка еще не использовалась!' }}
                         </td>
+
+                        <td>
+                            {% if link.isDisposable %}
+                                Данная ссылка - одноразовая
+                                {% if link.expirationDate %}
+                                    (действует до: {{ link.expirationDate|date('d.m.Y H:i') }})
+                                {% else %}
+                                    (бессрочная)
+                                {% endif %}
+                            {% else %}
+                                {{ link.expirationDate ? link.expirationDate|date('d.m.Y H:i') :  'Данная ссылка бессрочна' }}
+                            {% endif %}
+                        </td>
+
+
                     </tr>
                 {% endfor %}
                 </tbody>
