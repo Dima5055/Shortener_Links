@@ -40,7 +40,7 @@
                         </td>
                         <td>{{ link.numbersOfClick }}</td>
                         <td>
-                            {{ link.lastUseDate ? link.lastUseDate|date('d.m.Y H:i') : '-' }}
+                            {{ link.lastUseDate ? link.lastUseDate|date('d.m.Y H:i') : 'Данная ссылка еще не использовалась!' }}
                         </td>
                     </tr>
                 {% endfor %}

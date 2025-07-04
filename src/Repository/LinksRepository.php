@@ -29,7 +29,6 @@ class LinksRepository extends ServiceEntityRepository
         }
         $link->setShortUrl($slug);
         $link->setCreationDate(new \DateTime());
-        $link->setLastUseDate(new \DateTime());
         $link->setNumbersOfClick(0);
 
         $this->getEntityManager()->persist($link);
@@ -49,6 +48,7 @@ class LinksRepository extends ServiceEntityRepository
     }
 
 
+
     //Функция получение полной сокращенной ссылки по идентфикатору
     public function fullShortLink(string $slug, string $schemeAndHost): string
     {
@@ -66,6 +66,51 @@ class LinksRepository extends ServiceEntityRepository
             }
             $this->getEntityManager()->flush();
         }
+    }
+
+
+
+
+
+
+
+
+    public function saveNewLink2(Links $link): Links
+    {
+        date_default_timezone_set('Europe/Moscow');
+        if ($link->isDisposable() === null) {
+            $link->setDisposable(false);
+        }
+        $link->setCreationDate(new \DateTime());
+        $link->setNumbersOfClick(0);
+
+        // Первое сохранение для получения ID
+        $this->getEntityManager()->persist($link);
+        $this->getEntityManager()->flush();
+        // Генерация slug на основе ID
+        $slug = $this->idToShortCode($link->getId());
+        $link->setShortUrl($slug);
+        // Второе сохранение для slug
+        $this->getEntityManager()->flush();
+        return $link;
+    }
+
+
+
+    private function idToShortCode(int $id): string
+    {
+        $map = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $shortCode = '';
+        $num = $id;
+        $len = 6;
+
+        do {
+            $index = $num % 62;
+            $shortCode = $map[$index] . $shortCode;
+            $num = (int)($num / 62);
+        } while ($num > 0);
+
+        return str_pad($shortCode, 6, '0', STR_PAD_LEFT);
     }
 
 

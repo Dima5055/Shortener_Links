@@ -21,19 +21,24 @@ final class LinksController extends AbstractController
         $link = new Links();
         $form = $this->createForm(LinksForm::class, $link);
 
+
         $form->handleRequest($request);
         if  ($form->isSubmitted() && $form->isValid()) {
             do {
                 $slug = $this->generateShortCode();
                 $existingLink = $linksRepository->findOneBy(['shortUrl' => $slug]);
             } while ($existingLink !== null);
+            is_null($link->getExpirationDate()) ?? $link->setExpirationDate(null);
             $linksRepository->saveNewLink($link, $slug);
-            $shortUrl = $linksRepository->fullShortLink($slug, $request->getSchemeAndHttpHost());
+//            $linksRepository->saveNewLink($link);
+
+
+            $shortUrl = $linksRepository->fullShortLink($link->getShortUrl(), $request->getSchemeAndHttpHost());
         }
 
         return $this->render('links/index.html.twig', [
             'form' => $form->createView(),
-            'short_url' => $shortUrl,
+            'shortUrl' => $shortUrl,
         ]);
     }
 

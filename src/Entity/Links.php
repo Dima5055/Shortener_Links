@@ -21,13 +21,13 @@ class Links
     #[Assert\Url(message: 'Указанная ссылка {{ value }} не является url',)]
     private ?string $originalUrl = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $shortUrl = null;
 
     #[ORM\Column]
     private ?\DateTime $creationDate = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTime $lastUseDate = null;
 
     #[ORM\Column]
@@ -36,9 +36,13 @@ class Links
     #[ORM\Column(nullable: true)]
     private ?bool $disposable = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    //#[Assert\DateTime(message: 'Указанное значение даты {{ value }} не является правильной',)]
-    private ?\DateTime $expirationDate = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[Assert\GreaterThan(
+        //value: new \DateTime('now', new \DateTimeZone('Europe/Moscow')),
+        //message: "Дата должна быть больше {{ value }}")]
+        'today', message: "Дата должн быть больше {{ value }}")]
+    private ?\DateTimeImmutable $expirationDate = null;
 
 
     public function getId(): ?int
@@ -117,13 +121,12 @@ class Links
         return $this;
     }
 
-    public function getExpirationDate(): ?\DateTime
+    public function getExpirationDate(): ?\DateTimeImmutable
     {
         return $this->expirationDate;
     }
 
-
-    public function setExpirationDate(?\DateTime $expirationDate): self
+    public function setExpirationDate(?\DateTimeImmutable $expirationDate): static
     {
         $this->expirationDate = $expirationDate;
         return $this;
